@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -172,11 +171,35 @@ int popByValue(node_t **head, int val)
 	node_t *current = *head;
 	node_t *temp_node = NULL;
 
+	if (current == NULL)
+	{
+		return -1;
+	}
 
+	if ((*head)->val == val)
+	{
+		return popFirst(head);
+	}
 
-	while (current->next->val != val)
-    {
+	temp_node = current = (*head)->next;
+	while (current) {
+		if (current->val == val)
+		{
+			temp_node->next = current->next;
+			free(current);
+			return val;
+		}
+
+		temp_node = current;
 		current = current->next;
+	}
+	return -1;
+
+
+	// Another way to do it...
+	/*while (current->next->val != val)
+	{
+	current = current->next;
 	}
 
 	temp_node = current->next;
@@ -184,5 +207,5 @@ int popByValue(node_t **head, int val)
 	current->next = temp_node->next;
 	free(temp_node);
 
-	return retval;
+	return retval;*/
 }
