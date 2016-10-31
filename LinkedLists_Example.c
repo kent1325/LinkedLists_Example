@@ -8,8 +8,8 @@
 // Linked list struct thing...
 typedef struct node
 {
-    int val;
-    struct node *next;
+	int val;
+	struct node *next;
 } node_t;
 
 // definitions
@@ -22,11 +22,13 @@ int popByIndex(node_t **head, int index);
 int popByValue(node_t **head, int val);
 void pushByIndex(node_t **head, int index, int val);
 void pushBByValue(node_t **head, int sVal, int iVal);
+void reverse(node_t **head);
 
+// main function
 int main()
 {
 	node_t *head = NULL;
-    head = malloc(sizeof(node_t));
+	head = malloc(sizeof(node_t));
 
 	if (head == NULL)
 	{
@@ -41,14 +43,18 @@ int main()
 	head->next->next->next = NULL;
 
 	//pushBByValue(&head, 7, 1);
-    //pushByIndex(&head, 1, 5);
+	//pushByIndex(&head, 1, 5);
 	//pushLast(head, 9);
 	//pushFirst(&head, 1);
 	//popFirst(&head);
 	//popLast(head);
 	//popByIndex(&head, 3);
 	//popByValue(&head, 9);
+	//printList(head);
+	//reverse(&head);
 	printList(head);
+
+	free(head);
 
 	return 0;
 }
@@ -100,65 +106,65 @@ void pushFirst(node_t **head, int val)
 // Pushing value by index number
 void pushByIndex(node_t **head, int index, int val)
 {
-    node_t *current = *head;
-    node_t *temp_node = NULL;
-    node_t *new_node = malloc(sizeof(node_t));
+	node_t *current = *head;
+	node_t *temp_node = NULL;
+	node_t *new_node = malloc(sizeof(node_t));
 
-    if (index == 0)
-    {
-        pushFirst(head, val);
-    }
+	if (index == 0)
+	{
+		pushFirst(head, val);
+	}
 
-    for (int i = 0; i < index -1; i++)
-    {
-        if (current->next == NULL)
-        {
-            return - 1;
-        }
-        current = current->next;
-    }
+	for (int i = 0; i < index - 1; i++)
+	{
+		if (current->next == NULL)
+		{
+			return;
+		}
+		current = current->next;
+	}
 
-    new_node->val = val;
-    temp_node = current->next;
-    current->next = new_node;
-    new_node->next = temp_node;
+	new_node->val = val;
+	temp_node = current->next;
+	current->next = new_node;
+	new_node->next = temp_node;
 
-    return;
+	return;
 }
 
 // Pushing a value before a certain value. sVal = search value   iVal = inserted value
 void pushBByValue(node_t **head, int sVal, int iVal)
 {
-    node_t *current = *head;
-    node_t *temp_node = NULL;
-    node_t *new_node = malloc(sizeof(node_t));
+	node_t *current = *head;
+	node_t *temp_node = NULL;
+	node_t *new_node = malloc(sizeof(node_t));
 
-    if (sVal == NULL || iVal == NULL)
-    {
-        return;
-    }
+	if (sVal == NULL || iVal == NULL)
+	{
+		return;
+	}
 
-    if ((*head)->val == sVal)
-    {
-        return pushFirst(head, iVal);
-    }
+	if ((*head)->val == sVal)
+	{
+		return pushFirst(head, iVal);
+	}
 
-    while (current->next->val != sVal)
-    {
-        if (current->next == NULL)
-        {
-            return;
-        }
+	while (current->next->val != sVal)
+	{
+		if (current->next == NULL)
+		{
+			return;
+		}
 
-        current = current->next;
-    }
+		current = current->next;
+	}
 
-    new_node->val = iVal;
-    temp_node = current->next;
-    current->next = new_node;
-    new_node->next = temp_node;
+	new_node->val = iVal;
+	temp_node = current->next;
+	current->next = new_node;
+	new_node->next = temp_node;
 
-    return;
+	return;
 }
 // Popping the first item of the list
 int popFirst(node_t **head)
@@ -236,6 +242,7 @@ int popByIndex(node_t **head, int index)
 // Popping the item by selected value
 int popByValue(node_t **head, int val)
 {
+
 	int retval = -1;
 	node_t *current = *head;
 	node_t *temp_node = NULL;
@@ -263,4 +270,24 @@ int popByValue(node_t **head, int val)
 		current = current->next;
 	}
 	return -1;
+}
+
+// Reversing the linked lists
+void reverse(node_t **head)
+{
+	node_t *current, *prev, *next;
+	current = *head;
+	prev = NULL;
+
+	while (current != NULL)
+	{
+		next = current->next;
+		current->next = prev;
+		prev = current;
+		current = next;
+	}
+
+	*head = prev;
+
+	return;
 }
